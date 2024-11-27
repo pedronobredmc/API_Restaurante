@@ -1,9 +1,9 @@
-package com.pedronobrega.restaurante.pizza;
+package com.pedronobrega.restaurante.Entities.pizza;
 
 public enum Sabor {
     CALABRESA,
     MUSSARELA,
     PORTUGUESA,
     FRANGO,
-    MARGUERIA
+    MARGUERITA
 }

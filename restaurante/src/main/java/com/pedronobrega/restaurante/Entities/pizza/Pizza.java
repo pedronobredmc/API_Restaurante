@@ -1,4 +1,4 @@
-package com.pedronobrega.restaurante.pizza;
+package com.pedronobrega.restaurante.Entities.pizza;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
