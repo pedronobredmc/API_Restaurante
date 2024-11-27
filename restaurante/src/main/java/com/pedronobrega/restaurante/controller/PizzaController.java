@@ -7,6 +7,7 @@ import com.pedronobrega.restaurante.Services.PizzaService;
 import com.pedronobrega.restaurante.dtos.PizzaDto;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class PizzaController {
     }
     
     @PutMapping("atualizarpizza/{id}")
-    public PizzaDto atualizarPizza(@PathVariable Long id, @RequestBody PizzaDto campoParaAtualizar) {
+    public PizzaDto atualizarPizza(@PathVariable @NotNull Long id, @RequestBody @Valid PizzaDto campoParaAtualizar) {
         return pizzaService.atualizarPizza(id, campoParaAtualizar);
     }
 }
