@@ -3,12 +3,16 @@ package com.pedronobrega.restaurante.dtos;
 import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Entities.pizza.Tamanho;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class PizzaDto {
+    @NotNull
+    @NotBlank
     private String nome;
     private Double preco;
     private boolean disponivel;
