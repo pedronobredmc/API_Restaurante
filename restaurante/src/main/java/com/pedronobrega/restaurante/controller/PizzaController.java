@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 //import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -35,9 +37,13 @@ public class PizzaController {
         return pizzaService.cadastrarNovaPizza(novaPizzaDto);   
     }
 
-    @GetMapping("/buscar:{id}")
+    @GetMapping("/buscar/{id}")
     public PizzaDto buscarPizzaPorId(@PathVariable Long id) {
         return pizzaService.buscarPizzaPorId(id);
     }
     
+    @PutMapping("atualizarpizza/{id}")
+    public PizzaDto atualizarPizza(@PathVariable Long id, @RequestBody PizzaDto campoParaAtualizar) {
+        return pizzaService.atualizarPizza(id, campoParaAtualizar);
+    }
 }
