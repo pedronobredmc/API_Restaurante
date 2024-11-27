@@ -41,4 +41,7 @@ public class PizzaService {
         return modelMapper.map(pizza, PizzaDto.class);
     }
 
+    public void deletarPizza(Long id){
+        pizzaRepository.deleteById(id);
+    }
 }

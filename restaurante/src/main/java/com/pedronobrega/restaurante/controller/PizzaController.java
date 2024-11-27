@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -39,12 +40,17 @@ public class PizzaController {
     }
 
     @GetMapping("/buscar/{id}")
-    public PizzaDto buscarPizzaPorId(@PathVariable Long id) {
+    public PizzaDto buscarPizzaPorId(@PathVariable @NotNull Long id) {
         return pizzaService.buscarPizzaPorId(id);
     }
     
     @PutMapping("atualizarpizza/{id}")
     public PizzaDto atualizarPizza(@PathVariable @NotNull Long id, @RequestBody @Valid PizzaDto campoParaAtualizar) {
         return pizzaService.atualizarPizza(id, campoParaAtualizar);
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public void deletarPizza(@PathVariable @NotNull Long id) {
+        pizzaService.deletarPizza(id);
     }
 }
