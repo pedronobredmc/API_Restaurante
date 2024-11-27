@@ -29,5 +29,9 @@ public class PizzaService {
         return pizzas.stream().map(pizza -> modelMapper.map(pizza, PizzaDto.class)).collect(Collectors.toList());
     }
 
+    public PizzaDto buscarPizzaPorId(Long Id){
+        Pizza pizza = pizzaRepository.findById(Id).orElseThrow();
+        return modelMapper.map(pizza, PizzaDto.class);
+    }
 
 }

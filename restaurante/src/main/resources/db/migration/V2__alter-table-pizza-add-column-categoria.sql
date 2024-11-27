@@ -1,0 +1,1 @@
+alter table pizza add column categoria varchar(255);

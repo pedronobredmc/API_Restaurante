@@ -1,5 +1,6 @@
 package com.pedronobrega.restaurante.dtos;
 
+import com.pedronobrega.restaurante.Entities.pizza.Categoria;
 import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Entities.pizza.Tamanho;
 
@@ -20,4 +21,5 @@ public class PizzaDto {
     private boolean disponivel;
     private Tamanho tamanho;
     private Sabor sabor;
+    private Categoria categoria;
 }
