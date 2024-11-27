@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pedronobrega.restaurante.Services.PizzaService;
 import com.pedronobrega.restaurante.dtos.PizzaDto;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class PizzaController {
     }
 
     @PostMapping("/cadastrar")
-    public PizzaDto cadastrarPizza(@RequestBody PizzaDto novaPizzaDto) {
+    public PizzaDto cadastrarPizza(@RequestBody @Valid PizzaDto novaPizzaDto) {
         return pizzaService.cadastrarNovaPizza(novaPizzaDto);   
     }
 
