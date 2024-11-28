@@ -5,17 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "sabor")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Sabor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String Sabor;
+
+    public Sabor(String sabor) {
+        Sabor = sabor;
+    }
+
 }

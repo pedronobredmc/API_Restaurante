@@ -4,8 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.pedronobrega.restaurante.Entities.pizza.Pizza;
+import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Repository.PizzaRepository;
+import com.pedronobrega.restaurante.Repository.SaborRepository;
 import com.pedronobrega.restaurante.dtos.PizzaDto;
+import com.pedronobrega.restaurante.exceptions.SaborNotFoundException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,13 +19,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PizzaService {
     private final PizzaRepository pizzaRepository;
-
     private final ModelMapper modelMapper;
+    private final SaborRepository saborRepository;
 
-    public PizzaDto cadastrarNovaPizza(PizzaDto novaPizzaDto){
-        Pizza pizza = modelMapper.map(novaPizzaDto, Pizza.class);
-        pizzaRepository.save(pizza);
-        return modelMapper.map(pizza, PizzaDto.class);
+    public PizzaDto cadastrarNovaPizza(PizzaDto novaPizzaDto) {
+        Pizza novaPizza = new Pizza(novaPizzaDto.getNome(), novaPizzaDto.getPreco(), novaPizzaDto.isDisponivel(), novaPizzaDto.getTamanho(), novaPizzaDto.getCategoria());
+        Sabor novoSabor = new Sabor(novaPizzaDto.getSabor());
+        boolean saborEncontrado = false;
+
+        for (Sabor sabor : saborRepository.findAll()) {
+            if (sabor.getSabor().equals(novoSabor.getSabor())) {
+                novoSabor = sabor;
+                saborEncontrado = true;
+                break;
+            }
+        }
+        if (!saborEncontrado) {
+            // Lançar exceção ou retornar erro
+            throw new SaborNotFoundException("Sabor não encontrado");
+        }
+        novaPizza.setSabor(novoSabor);
+        Pizza pizzaSalva = pizzaRepository.save(novaPizza);
+        return modelMapper.map(pizzaSalva, PizzaDto.class);
     }
 
     public List<PizzaDto> listarPizzas() {

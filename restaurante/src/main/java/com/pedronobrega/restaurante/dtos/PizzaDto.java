@@ -1,7 +1,6 @@
 package com.pedronobrega.restaurante.dtos;
 
 import com.pedronobrega.restaurante.Entities.pizza.Categoria;
-import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Entities.pizza.Tamanho;
 
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +19,6 @@ public class PizzaDto {
     private Double preco;
     private boolean disponivel;
     private Tamanho tamanho;
-    private Sabor sabor;
+    private String sabor;
     private Categoria categoria;
 }
