@@ -1,6 +1,8 @@
 package com.pedronobrega.restaurante.Services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pedronobrega.restaurante.Entities.pizza.Pizza;
@@ -9,9 +11,6 @@ import com.pedronobrega.restaurante.Repository.PizzaRepository;
 import com.pedronobrega.restaurante.Repository.SaborRepository;
 import com.pedronobrega.restaurante.dtos.PizzaDto;
 import com.pedronobrega.restaurante.exceptions.SaborNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,9 +42,8 @@ public class PizzaService {
         return modelMapper.map(pizzaSalva, PizzaDto.class);
     }
 
-    public List<PizzaDto> listarPizzas() {
-        List<Pizza> pizzas = pizzaRepository.findAll();
-        return pizzas.stream().map(pizza -> modelMapper.map(pizza, PizzaDto.class)).collect(Collectors.toList());
+    public Page<PizzaDto> listarPizzas(Pageable paginacao){
+        return pizzaRepository.findAll(paginacao).map(p -> modelMapper.map(p, PizzaDto.class)); 
     }
 
     public PizzaDto buscarPizzaPorId(Long Id){
