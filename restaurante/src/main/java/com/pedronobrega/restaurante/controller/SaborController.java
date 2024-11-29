@@ -1,7 +1,8 @@
 package com.pedronobrega.restaurante.controller;
 
-import java.util.List;
+import java.net.URI;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Services.SaborService;
-
+import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +27,27 @@ public class SaborController {
     private final SaborService saborService;
 
     @GetMapping()
-    public List<Sabor> listarSabores() {
-        return saborService.listarSabores();
+    public ResponseEntity<List<Sabor>> listarSabores() {
+        List<Sabor> sabores = saborService.listarSabores();
+        return ResponseEntity.ok(sabores);
     }
 
     @PostMapping("/cadastrar")
-    public Sabor cadastrarPizza(@RequestBody @Valid Sabor novoSabor) {
-        return saborService.cadastrarNovoSabor(novoSabor);   
+    public ResponseEntity<Sabor> cadastrarSabor(@RequestBody @Valid Sabor novoSabor, UriComponentsBuilder uriBuilder) {
+        Sabor saborCadastrado = saborService.cadastrarNovoSabor(novoSabor);
+        URI endereco = uriBuilder.path("/sabor/buscar/{id}").buildAndExpand(saborCadastrado.getId()).toUri();
+        return ResponseEntity.created(endereco).body(saborCadastrado);
     }
 
     @PutMapping("atualizarsabor/{id}")
-    public Sabor atualizarSabor(@PathVariable @NotNull Long id, @RequestBody @Valid Sabor campoParaAtualizar) {
-        return saborService.atualizarSabor(id, campoParaAtualizar);
+    public ResponseEntity<Sabor> atualizarSabor(@PathVariable @NotNull Long id, @RequestBody @Valid Sabor campoParaAtualizar) {
+        Sabor saborAtualizado = saborService.atualizarSabor(id, campoParaAtualizar);
+        return ResponseEntity.ok(saborAtualizado);
     }
 
     @DeleteMapping("/deletar/{id}")
-    public void deletarSabor(@PathVariable @NotNull Long id) {
+    public ResponseEntity<Void> deletarSabor(@PathVariable @NotNull Long id) {
         saborService.deletarSabor(id);
+        return ResponseEntity.noContent().build();
     }
 }
