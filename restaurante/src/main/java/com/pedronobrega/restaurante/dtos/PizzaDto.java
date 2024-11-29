@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PizzaDto {
+    private Long id;
     @NotNull
     @NotBlank
     private String nome;
