@@ -15,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class Sabor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Sabor;
+    private String sabor;
 
     public Sabor(String sabor) {
-        Sabor = sabor;
+        this.sabor = sabor;
     }
 
 }

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,8 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/pizzas")
 @RequiredArgsConstructor
 public class PizzaController {
-
-    private final PizzaService pizzaService;
+    @Autowired
+    private PizzaService pizzaService;
 
     @GetMapping()
     public Page<PizzaDto> listarPizzas(@PageableDefault(size = 10) Pageable paginacao) {

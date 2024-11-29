@@ -1,6 +1,7 @@
 package com.pedronobrega.restaurante.Services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,25 +18,20 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PizzaService {
-    private final PizzaRepository pizzaRepository;
-    private final ModelMapper modelMapper;
-    private final SaborRepository saborRepository;
+    @Autowired
+    private PizzaRepository pizzaRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private SaborRepository saborRepository;
 
     public PizzaDto cadastrarNovaPizza(PizzaDto novaPizzaDto) {
         Pizza novaPizza = new Pizza(novaPizzaDto.getNome(), novaPizzaDto.getPreco(), novaPizzaDto.isDisponivel(), novaPizzaDto.getTamanho(), novaPizzaDto.getCategoria());
         Sabor novoSabor = new Sabor(novaPizzaDto.getSabor());
-        boolean saborEncontrado = false;
-
-        for (Sabor sabor : saborRepository.findAll()) {
-            if (sabor.getSabor().equals(novoSabor.getSabor())) {
-                novoSabor = sabor;
-                saborEncontrado = true;
-                break;
-            }
-        }
-        if (!saborEncontrado) {
-            // Lançar exceção ou retornar erro
-            throw new SaborNotFoundException("Sabor não encontrado");
+        if(!saborRepository.existsBySabor(novoSabor.getSabor())){
+            throw new SaborNotFoundException("Sabor não encontrado"); 
+        }else{
+            novoSabor = saborRepository.findBySabor(novoSabor.getSabor());
         }
         novaPizza.setSabor(novoSabor);
         Pizza pizzaSalva = pizzaRepository.save(novaPizza);
