@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RestauranteApplication<restaurante>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.pedronobrega.restaurante.RestauranteApplication",
+            "projectName": "restaurante",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

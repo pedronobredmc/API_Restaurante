@@ -11,6 +11,7 @@ import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Repository.PizzaRepository;
 import com.pedronobrega.restaurante.Repository.SaborRepository;
 import com.pedronobrega.restaurante.dtos.PizzaDto;
+import com.pedronobrega.restaurante.exceptions.IdNotFoundException;
 import com.pedronobrega.restaurante.exceptions.SaborNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class PizzaService {
     }
 
     public PizzaDto buscarPizzaPorId(Long Id){
-        Pizza pizza = pizzaRepository.findById(Id).orElseThrow();
+        Pizza pizza = pizzaRepository.findById(Id).orElseThrow(IdNotFoundException::new);
         return modelMapper.map(pizza, PizzaDto.class);
     }
 
@@ -55,6 +56,10 @@ public class PizzaService {
     }
 
     public void deletarPizza(Long id){
-        pizzaRepository.deleteById(id);
+        if(!pizzaRepository.existsById(id)){
+            throw new IdNotFoundException("Id não encontrado");
+        }else{
+            pizzaRepository.deleteById(id);
+        }
     }
 }
