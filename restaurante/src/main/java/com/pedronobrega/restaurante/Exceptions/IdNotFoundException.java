@@ -1,4 +1,4 @@
-package com.pedronobrega.restaurante.exceptions;
+package com.pedronobrega.restaurante.Exceptions;
 
 public class IdNotFoundException extends RuntimeException {
     public IdNotFoundException(){
