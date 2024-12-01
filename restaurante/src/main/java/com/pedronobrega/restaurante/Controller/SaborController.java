@@ -1,4 +1,4 @@
-package com.pedronobrega.restaurante.controller;
+package com.pedronobrega.restaurante.Controller;
 
 import java.net.URI;
 

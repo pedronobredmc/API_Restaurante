@@ -1,4 +1,4 @@
-package com.pedronobrega.restaurante.dtos;
+package com.pedronobrega.restaurante.Dtos;
 
 import com.pedronobrega.restaurante.Entities.pizza.Categoria;
 import com.pedronobrega.restaurante.Entities.pizza.Tamanho;

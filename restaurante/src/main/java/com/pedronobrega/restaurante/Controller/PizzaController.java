@@ -1,11 +1,11 @@
-package com.pedronobrega.restaurante.controller;
+package com.pedronobrega.restaurante.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.pedronobrega.restaurante.Dtos.PizzaDto;
 import com.pedronobrega.restaurante.Services.PizzaService;
-import com.pedronobrega.restaurante.dtos.PizzaDto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
