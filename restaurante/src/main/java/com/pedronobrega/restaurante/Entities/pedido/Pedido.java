@@ -29,9 +29,11 @@ public class Pedido {
     @Enumerated (EnumType.STRING)
     private Andamento andamento;
     private int numeroMesa;
+    private List<String> tamanho;
 
     public Pedido(int numeroMesa) {
         this.numeroMesa = numeroMesa;
         this.pizza =  new ArrayList<Pizza>();
+        this.tamanho =  new ArrayList<String>();
     }
 }

@@ -11,4 +11,5 @@ import lombok.ToString;
 public class PedidoDto {
     private int numeroMesa;
     private List<String> pizza;
+    private List<String> tamanho;
 }

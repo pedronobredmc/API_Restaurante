@@ -10,6 +10,7 @@ import com.pedronobrega.restaurante.Repository.PizzaRepository;
 import com.pedronobrega.restaurante.Dtos.PedidoDto;
 import com.pedronobrega.restaurante.Entities.pedido.Pedido;
 import com.pedronobrega.restaurante.Entities.pizza.Pizza;
+import com.pedronobrega.restaurante.Entities.pizza.Tamanho;
 
 import static com.pedronobrega.restaurante.Entities.pedido.Andamento.INICIADO;
 
@@ -17,6 +18,8 @@ import java.util.List;
 
 import com.pedronobrega.restaurante.Exceptions.NumeroMesaNotFoundException;
 import com.pedronobrega.restaurante.Exceptions.SaborNotFoundException;
+import com.pedronobrega.restaurante.Exceptions.PizzaNotFoundException;
+import com.pedronobrega.restaurante.Exceptions.InvalidTamanhoException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,17 +35,36 @@ public class PedidoService {
 
     public PedidoDto cadastrarNovoPedido(PedidoDto novoPedidoDto) {
         //TODO: Verificar se existe pedido em aberto para a mesa
+        //TODO: Definir o tamanho da pizza pelo DTO
         Pedido novoPedido = new Pedido(novoPedidoDto.getNumeroMesa());
+        List<String> tamanhosString = novoPedidoDto.getTamanho();
         List<String> pizzasString = novoPedidoDto.getPizza();
-        for (String sabor : pizzasString) {
+        if (tamanhosString.size() != pizzasString.size()) {
+            throw new IllegalArgumentException("O número de tamanhos não corresponde ao número de pizzas.");
+        }
+        for (int i = 0; i < pizzasString.size(); i++) {
+            String sabor = pizzasString.get(i);
+            String tamanhoStr = tamanhosString.get(i);
+
             if (!pizzaRepository.existsBySabor(sabor)) {
-                throw new SaborNotFoundException("Sabor não encontrado.");
+                throw new SaborNotFoundException("Sabor não encontrado: " + sabor);
+            }
+            Tamanho tamanho;
+            try {
+                tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new InvalidTamanhoException("Tamanho inválido: " + tamanhoStr);
+            }
+
+            Pizza pizza = pizzaRepository.findBySaborAndTamanho(sabor, tamanho);
+            
+            if (pizza != null) {
+                novoPedido.getPizza().add(pizza);
+            } else {
+                throw new PizzaNotFoundException("Pizza com sabor " + sabor + " e tamanho " + tamanho + " não encontrada.");
             }
         }
-        for (String sabor : pizzasString) {
-            Pizza pizza = pizzaRepository.findBySabor(sabor);
-            if (pizza != null) novoPedido.getPizza().add(pizza);
-        }
+
         novoPedido.setAndamento(INICIADO);
         Pedido pedidoSalvo = pedidoRepository.save(novoPedido);
         return modelMapper.map(pedidoSalvo, PedidoDto.class);
