@@ -9,7 +9,6 @@ import com.pedronobrega.restaurante.Services.PizzaService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/pizzas")
-@RequiredArgsConstructor
 public class PizzaController {
     @Autowired
     private PizzaService pizzaService;
@@ -47,24 +45,36 @@ public class PizzaController {
     public ResponseEntity<PizzaDto> cadastrarPizza(@RequestBody @Valid PizzaDto novaPizzaDto, UriComponentsBuilder uriBuilder) {
         PizzaDto novaPizza =  pizzaService.cadastrarNovaPizza(novaPizzaDto);
         URI endereco = uriBuilder.path("/pizzas/buscar/{id}").buildAndExpand(novaPizza.getId()).toUri();
-        return ResponseEntity.created(endereco).body(novaPizza);   
+        return ResponseEntity.created(endereco).body(novaPizza);
     }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<PizzaDto> buscarPizzaPorId(@PathVariable @NotNull Long id) {
-        PizzaDto pizzaBuscada = pizzaService.buscarPizzaPorId(id);
-        return ResponseEntity.ok(pizzaBuscada);
+        try {
+            PizzaDto pizzaBuscada = pizzaService.buscarPizzaPorId(id);
+            return ResponseEntity.ok(pizzaBuscada);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @PutMapping("atualizarpizza/{id}")
     public ResponseEntity<PizzaDto> atualizarPizza(@PathVariable @NotNull Long id, @RequestBody @Valid PizzaDto campoParaAtualizar) {
-        PizzaDto pizzaAtualizada = pizzaService.atualizarPizza(id, campoParaAtualizar);
-        return ResponseEntity.ok(pizzaAtualizada);
+        try {
+            PizzaDto pizzaAtualizada = pizzaService.atualizarPizza(id, campoParaAtualizar);
+            return ResponseEntity.ok(pizzaAtualizada);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarPizza(@PathVariable @NotNull Long id) {
-        pizzaService.deletarPizza(id);
-        return ResponseEntity.noContent().build();
+        try {
+            pizzaService.deletarPizza(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.pedronobrega.restaurante.Dtos.PizzaDto;
 import com.pedronobrega.restaurante.Entities.pizza.Pizza;
-import com.pedronobrega.restaurante.Entities.pizza.Sabor;
 import com.pedronobrega.restaurante.Exceptions.IdNotFoundException;
-import com.pedronobrega.restaurante.Exceptions.SaborNotFoundException;
 import com.pedronobrega.restaurante.Repository.PizzaRepository;
-import com.pedronobrega.restaurante.Repository.SaborRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,18 +20,9 @@ public class PizzaService {
     private PizzaRepository pizzaRepository;
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private SaborRepository saborRepository;
 
     public PizzaDto cadastrarNovaPizza(PizzaDto novaPizzaDto) {
-        Pizza novaPizza = new Pizza(novaPizzaDto.getNome(), novaPizzaDto.getPreco(), novaPizzaDto.isDisponivel(), novaPizzaDto.getTamanho(), novaPizzaDto.getCategoria());
-        Sabor novoSabor = new Sabor(novaPizzaDto.getSabor());
-        if(!saborRepository.existsBySabor(novoSabor.getSabor())){
-            throw new SaborNotFoundException("Sabor não encontrado"); 
-        }else{
-            novoSabor = saborRepository.findBySabor(novoSabor.getSabor());
-        }
-        novaPizza.setSabor(novoSabor);
+        Pizza novaPizza = new Pizza(novaPizzaDto.getSabor(), novaPizzaDto.getPreco(), novaPizzaDto.isDisponivel(), novaPizzaDto.getTamanho(), novaPizzaDto.getCategoria());
         Pizza pizzaSalva = pizzaRepository.save(novaPizza);
         return modelMapper.map(pizzaSalva, PizzaDto.class);
     }
@@ -44,13 +32,20 @@ public class PizzaService {
     }
 
     public PizzaDto buscarPizzaPorId(Long Id){
-        Pizza pizza = pizzaRepository.findById(Id).orElseThrow(IdNotFoundException::new);
-        return modelMapper.map(pizza, PizzaDto.class);
+        if (!pizzaRepository.existsById(Id)){
+            throw new IdNotFoundException("Id não encontrado");
+        }else{
+            return modelMapper.map(pizzaRepository.findById(Id), PizzaDto.class);
+        }
     }
 
     public PizzaDto atualizarPizza(Long id, PizzaDto camposParaAtualizar){
         Pizza pizza = modelMapper.map(camposParaAtualizar, Pizza.class);
-        pizza.setId(id);
+        if(!pizzaRepository.existsById(id)){
+            throw new IdNotFoundException("Id não encontrado");
+        }else{
+            pizza.setId(id);
+        }
         pizzaRepository.save(pizza);
         return modelMapper.map(pizza, PizzaDto.class);
     }

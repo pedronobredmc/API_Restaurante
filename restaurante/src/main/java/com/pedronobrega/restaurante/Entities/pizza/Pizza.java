@@ -6,8 +6,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +18,16 @@ import jakarta.persistence.EnumType;
 public class Pizza {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
     private Double preco;
     private boolean disponivel;
-    @ManyToOne
-    @JoinColumn(name = "sabor_id")
-    private Sabor sabor;
+    private String sabor;
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
-    public Pizza(String nome, Double preco, boolean disponivel, Tamanho tamanho, Categoria categoria) {
-        this.nome = nome;
+    public Pizza(String sabor, Double preco, boolean disponivel, Tamanho tamanho, Categoria categoria) {
+        this.sabor = sabor;
         this.preco = preco;
         this.disponivel = disponivel;
         this.tamanho = tamanho;

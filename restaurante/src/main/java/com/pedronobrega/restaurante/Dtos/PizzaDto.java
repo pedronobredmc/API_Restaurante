@@ -6,20 +6,17 @@ import com.pedronobrega.restaurante.Entities.pizza.Tamanho;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PizzaDto {
     private Long id;
-    @NotNull
-    @NotBlank
-    private String nome;
     @Positive
     private Double preco;
     private boolean disponivel;
     private Tamanho tamanho;
+    @NotNull
+    @NotBlank
     private String sabor;
     private Categoria categoria;
 }
