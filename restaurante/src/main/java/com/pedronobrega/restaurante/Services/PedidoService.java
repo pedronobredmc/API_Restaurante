@@ -35,7 +35,6 @@ public class PedidoService {
 
     public PedidoDto cadastrarNovoPedido(PedidoDto novoPedidoDto) {
         //TODO: Verificar se existe pedido em aberto para a mesa
-        //TODO: Definir o tamanho da pizza pelo DTO
         Pedido novoPedido = new Pedido(novoPedidoDto.getNumeroMesa());
         List<String> tamanhosString = novoPedidoDto.getTamanho();
         List<String> pizzasString = novoPedidoDto.getPizza();
